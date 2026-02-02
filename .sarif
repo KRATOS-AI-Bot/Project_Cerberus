@@ -1,0 +1,98 @@
+
+import json
+import os
+import re
+import math
+
+def calculate_shannon_entropy(data):
+    entropy = 0.0
+    for x in range(256):
+        p_x = float(data.count(chr(x)))/len(data)
+        if p_x > 0:
+            entropy += - p_x*math.log(p_x, 2)
+    return entropy
+
+def scan_file(file_path, patterns):
+    try:
+        with open(file_path, 'r') as file:
+            content = file.read()
+            for pattern in patterns:
+                if re.search(pattern, content):
+                    return True
+            entropy = calculate_shannon_entropy(content)
+            if entropy > 7.0:
+                return True
+    except Exception as e:
+        print(f"Error scanning file {file_path}: {str(e)}")
+    return False
+
+def scan_directory(directory, patterns, exclude_folders, exclude_files):
+    results = []
+    for root, dirs, files in os.walk(directory):
+        for dir in dirs:
+            if dir in exclude_folders:
+                dirs.remove(dir)
+        for file in files:
+            if file.endswith(exclude_files):
+                continue
+            file_path = os.path.join(root, file)
+            if scan_file(file_path, patterns):
+                results.append(file_path)
+    return results
+
+def load_patterns(patterns_file):
+    with open(patterns_file, 'r') as file:
+        patterns = json.load(file)
+    return patterns['signatures']
+
+def load_cerberusignore(cerberusignore_file):
+    try:
+        with open(cerberusignore_file, 'r') as file:
+            return file.read().splitlines()
+    except FileNotFoundError:
+        return []
+
+def main():
+    patterns_file = 'patterns.json'
+    cerberusignore_file = '.cerberusignore'
+    target = '.'
+    patterns = load_patterns(patterns_file)
+    cerberusignore = load_cerberusignore(cerberusignore_file)
+    exclude_folders = ['.git', 'venv', 'node_modules', '.terraform', '__pycache__']
+    exclude_files = ['.jpg', '.png', '.zip', '.bin']
+    results = scan_directory(target, patterns, exclude_folders, exclude_files)
+    sarif_results = []
+    for result in results:
+        sarif_result = {
+            'ruleId': 'cerberus',
+            'level': 'error',
+            'message': {
+                'text': f'Potential secret found in {result}'
+            },
+            'locations': [
+                {
+                    'physicalLocation': {
+                        'address': result
+                    }
+                }
+            ]
+        }
+        sarif_results.append(sarif_result)
+    sarif = {
+        'version': '2.1.0',
+        'runs': [
+            {
+                'tool': {
+                    'driver': {
+                        'name': 'Cerberus'
+                    }
+                },
+                'results': sarif_results
+            }
+        ]
+    }
+    with open('results.sarif', 'w') as file:
+        json.dump(sarif, file, indent=4)
+
+if __name__ == '__main__':
+    main()
