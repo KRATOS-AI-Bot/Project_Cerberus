@@ -1,64 +1,16 @@
-Cerberus: The Repository Guardian
-================================
+Cerberus Enterprise Edition is a powerful tool designed to protect your repositories from security breaches by detecting and alerting on potential security risks. This tool utilizes a combination of regex patterns and Shannon entropy calculations to identify sensitive information, and integrates with the SARIF standard for seamless security alerts.
 
-Protect your repositories from security breaches with Cerberus, a powerful tool that scans for sensitive credentials and notifies you of potential threats.
+Features:
+Regex Pattern Matching: Cerberus uses a predefined set of high-confidence regex patterns to match common sensitive information such as AWS keys, Gemini keys, OpenAPI keys, and more.
+Shannon Entropy Calculations: In addition to regex matching, Cerberus calculates the Shannon entropy of strings to identify potential secrets that may not match known regex patterns.
+SARIF Integration: Cerberus generates a results.sarif file that can be uploaded to GitHub, allowing for easy integration with the Security tab of your repository.
+Exclusion Logic: Cerberus allows for customizable exclusion of files and directories using a .cerberusignore file, ensuring that only relevant files are scanned.
+Support for Local Folders: Cerberus can be run against local folders, making it easy to scan your codebase for security risks.
 
-Usage
------
+With Cerberus, you can rest assured that your repository is protected from potential security breaches. The combination of regex pattern matching, Shannon entropy calculations, and SARIF integration makes Cerberus a powerful tool in the fight against security risks. 
 
-To use Cerberus, simply run the following command in your terminal:
-python scanner.py --target <folder_or_url>
+Cerberus is named after the three-headed dog of Greek mythology that guarded the gates of the Underworld, and is designed to provide a similar level of protection for your repository. By using Cerberus, you can help prevent security breaches and keep your sensitive information safe. 
 
-This will scan the specified folder or repository for sensitive credentials and output the results in a SARIF file.
+To get started with Cerberus, simply run the scanner.py script against your local folder, and review the results.sarif file for any potential security risks. You can also integrate Cerberus with your GitHub repository using the provided .github/workflows/cerberus.yml file, allowing for automated security scanning and alerts. 
 
-Features
---------
-
-* Scans for high-confidence patterns of AWS Keys, Gemini Keys, OpenAPI keys, Groq Keys, GitHub Tokens, Slack Tokens, Discord Tokens, Private Keys (RSA/DSA), Stripe or RazorPay Keys
-* Uses Shannon Entropy to detect high-entropy words that may indicate sensitive information
-* Excludes common folders like .git, venv, node_modules, .terraform, and __pycache__
-* Excludes image, zip, and binary files
-* Allows users to ignore specific folders or files using a .cerberusignore file
-* Outputs results in SARIF format for easy integration with security tools
-* Prints alerts to the console for immediate notification
-
-Security
---------
-
-Cerberus is designed with security in mind. It uses best practices to minimize false positives and maximize detection of sensitive credentials.
-
-Getting Started
----------------
-
-1. Clone the Cerberus repository to your local machine.
-2. Run python scanner.py --target <folder_or_url> to scan your repository.
-3. Review the results in the output SARIF file.
-
-GitHub Actions
----------------
-
-To use Cerberus in your GitHub Actions workflow, add the following code to your .github/workflows/cerberus.yml file:
-name: Cerberus Scan
-on:
-  push:
-    branches:
-      - main
-jobs:
-  scan:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Run Cerberus
-        run: python scanner.py --target .
-      - name: Upload SARIF
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: results.sarif
-
-This will run Cerberus on every push to the main branch and upload the results to GitHub.
-
-About
------
-
-Cerberus is a tool designed to protect your repositories from security breaches. It is named after the three-headed dog that guards the gates of the underworld in Greek mythology. Just as Cerberus protected the underworld, our tool protects your repository from sensitive credentials and other security threats.
+By using Cerberus, you can help protect your repository from security breaches and ensure the integrity of your sensitive information.
