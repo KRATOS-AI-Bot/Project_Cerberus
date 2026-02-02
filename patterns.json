@@ -7,47 +7,47 @@
         },
         {
             "name": "AWS Secret Access Key",
-            "pattern": "aws_secret_access_key = [a-zA-Z0-9/+=]{40}"
+            "pattern": "([0-9a-zA-Z/+=]{40})"
         },
         {
             "name": "Gemini API Key",
-            "pattern": "gemini_api_key = [a-zA-Z0-9]{32}"
+            "pattern": "gemini_api_key=[a-zA-Z0-9_\\-]+"
         },
         {
             "name": "OpenAPI Key",
-            "pattern": "openapi_key = [a-zA-Z0-9]{32}"
+            "pattern": "api_key=[a-zA-Z0-9_\\-]+"
         },
         {
             "name": "Groq API Key",
-            "pattern": "groq_api_key = [a-zA-Z0-9]{32}"
+            "pattern": "groq_api_key=[a-zA-Z0-9_\\-]+"
         },
         {
             "name": "GitHub Token",
-            "pattern": "ghp_[a-zA-Z0-9]{36}"
+            "pattern": "ghp_[a-zA-Z0-9_\\-]+"
         },
         {
             "name": "Slack Token",
-            "pattern": "xoxb-[a-zA-Z0-9]{32}"
+            "pattern": "xoxb-[a-zA-Z0-9_\\-]+"
         },
         {
             "name": "Discord Token",
-            "pattern": "discord_token = [a-zA-Z0-9]{59}"
+            "pattern": "discord_token=[a-zA-Z0-9_\\-]+"
         },
         {
             "name": "RSA Private Key",
-            "pattern": "-----BEGIN RSA PRIVATE KEY-----[a-zA-Z0-9/+=\\n]{1000}-----END RSA PRIVATE KEY-----"
+            "pattern": "-----BEGIN RSA PRIVATE KEY-----[a-zA-Z0-9/\\+\\n]+-----END RSA PRIVATE KEY-----"
         },
         {
             "name": "DSA Private Key",
-            "pattern": "-----BEGIN DSA PRIVATE KEY-----[a-zA-Z0-9/+=\\n]{1000}-----END DSA PRIVATE KEY-----"
+            "pattern": "-----BEGIN DSA PRIVATE KEY-----[a-zA-Z0-9/\\+\\n]+-----END DSA PRIVATE KEY-----"
         },
         {
-            "name": "Stripe API Key",
-            "pattern": "sk_live_[a-zA-Z0-9]{32}"
+            "name": "Stripe Key",
+            "pattern": "sk_live_[a-zA-Z0-9_\\-]+"
         },
         {
-            "name": "RazorPay API Key",
-            "pattern": "razorpay_api_key = [a-zA-Z0-9]{32}"
+            "name": "RazorPay Key",
+            "pattern": "razorpay_api_key=[a-zA-Z0-9_\\-]+"
         }
     ]
 }

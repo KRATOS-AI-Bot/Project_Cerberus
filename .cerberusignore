@@ -1,30 +1,28 @@
 
 import os
+import re
 
 class CerberusIgnore:
-    def __init__(self, ignore_file='.cerberusignore'):
-        self.ignore_file = ignore_file
-        self.ignore_paths = self.load_ignore_paths()
+    def __init__(self, file_path):
+        self.file_path = file_path
+        self.ignore_patterns = self.load_ignore_patterns()
 
-    def load_ignore_paths(self):
-        ignore_paths = []
-        if os.path.exists(self.ignore_file):
-            with open(self.ignore_file, 'r') as f:
-                for line in f.readlines():
-                    line = line.strip()
-                    if line:
-                        ignore_paths.append(line)
-        return ignore_paths
+    def load_ignore_patterns(self):
+        try:
+            with open(self.file_path, 'r') as f:
+                return [line.strip() for line in f.readlines()]
+        except FileNotFoundError:
+            return []
 
     def is_ignored(self, path):
-        for ignore_path in self.ignore_paths:
-            if path.startswith(ignore_path):
+        for pattern in self.ignore_patterns:
+            if re.match(pattern, path):
                 return True
         return False
 
-def main():
-    ignore = CerberusIgnore()
-    print(ignore.ignore_paths)
+def load_cerberusignore(root_dir):
+    cerberusignore_path = os.path.join(root_dir, '.cerberusignore')
+    return CerberusIgnore(cerberusignore_path)
 
-if __name__ == '__main__':
-    main()
+def is_ignored(cerberusignore, path):
+    return cerberusignore.is_ignored(path)
