@@ -1,4 +1,4 @@
-name: Cerberus
+name: Cerberus Scan
 on:
   push:
     branches:
@@ -7,25 +7,20 @@ on:
     branches:
       - main
 jobs:
-  cerberus:
+  scan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Run trufflehog
-        run: |
-          pip install trufflehog
-          trufflehog --entropy=True .
-      - name: Run git-secrets
-        run: |
-          pip install git-secrets
-          git secrets --scan
-      - name: Run semgrep
-        run: |
-          pip install semgrep
-          semgrep --config=.semgrep.yml
-      - name: Upload results
-        uses: actions/upload-artifact@v4
+      - name: Install Python
+        uses: actions/setup-python@v4
         with:
-          name: cerberus-results
-          path: cerberus-results.txt
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+      - name: Run scanner
+        run: |
+          python scanner.py --target .
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
