@@ -1,0 +1,42 @@
+name: Cerberus
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  cerberus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          pip install gitleaks
+      - name: Run gitleaks
+        run: |
+          gitleaks --config=.gitleaks.toml --verbose
+      - name: Run trufflehog
+        run: |
+          pip install trufflehog
+          trufflehog --entropy=True --regex=True .
+      - name: Run git-secrets
+        run: |
+          pip install git-secrets
+          git secrets --scan
+      - name: Run semgrep
+        run: |
+          pip install semgrep
+          semgrep --config=.semgrep.yml
+      - name: Upload results
+        uses: actions/upload-artifact@v3
+        with:
+          name: cerberus-results
+          path: cerberus-results.txt
+      - name: Post results to Slack
+        uses: slack/post-message@v1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          message: "Cerberus results: $(cat cerberus-results.txt)"

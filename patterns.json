@@ -1,0 +1,52 @@
+{
+  "signatures": [
+    {
+      "name": "AWS Access Key ID",
+      "pattern": "AKIA[0-9A-Z]{16}"
+    },
+    {
+      "name": "AWS Secret Access Key",
+      "pattern": "([0-9a-zA-Z+/]{40})"
+    },
+    {
+      "name": "Gemini API Key",
+      "pattern": "gemini_api_key_[a-zA-Z0-9_]{10,50}"
+    },
+    {
+      "name": "OpenAPI Key",
+      "pattern": "Bearer [a-zA-Z0-9._-]{10,50}"
+    },
+    {
+      "name": "Groq API Key",
+      "pattern": "groq_api_key_[a-zA-Z0-9_]{10,50}"
+    },
+    {
+      "name": "GitHub Token",
+      "pattern": "ghp_[a-zA-Z0-9_-]{10,50}"
+    },
+    {
+      "name": "Slack Token",
+      "pattern": "xoxb-[0-9a-zA-Z_-]{10,50}"
+    },
+    {
+      "name": "Discord Token",
+      "pattern": "discord_token_[a-zA-Z0-9_]{10,50}"
+    },
+    {
+      "name": "RSA Private Key",
+      "pattern": "-----BEGIN RSA PRIVATE KEY-----[a-zA-Z0-9\\n]+-----END RSA PRIVATE KEY-----"
+    },
+    {
+      "name": "DSA Private Key",
+      "pattern": "-----BEGIN DSA PRIVATE KEY-----[a-zA-Z0-9\\n]+-----END DSA PRIVATE KEY-----"
+    },
+    {
+      "name": "Stripe API Key",
+      "pattern": "sk_live_[a-zA-Z0-9_-]{10,50}"
+    },
+    {
+      "name": "RazorPay API Key",
+      "pattern": "razorpay_api_key_[a-zA-Z0-9_]{10,50}"
+    }
+  ]
+}
